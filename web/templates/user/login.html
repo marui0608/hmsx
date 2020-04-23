@@ -1,0 +1,48 @@
+{% extends "common/layout_user.html" %}
+
+{% block content%}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="font-bold">DengLuImage</h2>
+                <div class="row">
+                    <a href="">
+                        <img style="width: 500px;height: 300px;" src="{{ url_for('static',filename='img/lp.jpg') }}" alt="">
+                    </a>               
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="ibox-content">
+                    <div class="m-t login_wrap">
+                        <div class="form-group text-center">
+                            <h2 class="font-bold">DengLU</h2>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">Email address</label>
+                            <input type="text" class="form-control" name="login_name" id="exampleInputEmail3" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword3">Password</label>
+                            <input type="password" class="form-control" name="login_pwd" id="exampleInputPassword3" placeholder="Password">
+                        </div>
+                        <button type="button" class="btn btn-primary block full-width m-b do-login">Sign in</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="">Power by 1903c</a>
+            </div>
+            <div class="col-md-6 text-right">
+                <small>&copy;1903c - 2020</small>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block js%}
+    <script src="{{ url_for('static',filename='js/user/login.js') }}"></script>
+{%endblock%}

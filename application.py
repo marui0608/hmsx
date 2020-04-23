@@ -12,3 +12,5 @@ class Application(Flask):
 
 app = Application(__name__,template_folder=os.getcwd()+'/web/templates',root_path=os.getcwd(),static_folder=os.getcwd()+'/web/static')
 manager = Manager(app)
+
+
