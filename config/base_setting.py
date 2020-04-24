@@ -3,3 +3,7 @@ SERVER_PORT = 8999
 # 连接到数据库
 SQLALCHEMY_DATABASE_URI = 'mysql://root:ma060800@127.0.0.1/hmsx_db?charset=utf8'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+# 自动登录的 cookie
+AUTH_COOKIE_NAME = 'Mary_Cookie'
