@@ -95,10 +95,12 @@ def edit():
         
     # 更新数据库的操作
     user_info = g.current_user
-    user_info['nickname'] = nickname
-    user_info['email'] = email
+    user_info.nickname = nickname
+    user_info.email = email
+
     db.session.add(user_info)
     db.session.commit()
+    
     return jsonify(resp)
 
 
