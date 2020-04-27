@@ -15,8 +15,8 @@ var user_login_ops = {
             var login_name = $(".login_wrap input[name=login_name]").val()
             var login_pwd = $(".login_wrap input[name=login_pwd]").val()
 
-            // console.log(login_name)
-            // console.log(login_pwd)
+            console.log(login_name)
+            console.log(login_pwd)
             // 前端校检  不为空 长度不小于1
             if (login_name == undefined || login_name.length < 1) {
                 alert('您输入的用户名为空')

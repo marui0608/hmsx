@@ -6,4 +6,13 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 # 自动登录的 cookie
-AUTH_COOKIE_NAME = 'Mary_Cookie'
+AUTH_COOKIE_NAME = 'Mary_hmsx'
+
+
+# 拦截器忽略规则
+IGNORE_URLS = ["^/user/login"]
+IGNORE_CHECK_LOGIN_URLS = [
+    "^/static",
+    "^/favicon.ico",
+    # "^/images"
+]
