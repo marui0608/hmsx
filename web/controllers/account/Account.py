@@ -1,8 +1,10 @@
 from flask import Blueprint,request,redirect,jsonify
 
-from common.libs.Helper import ops_render
+from common.libs.Helper import ops_render,getCurrentDate
 from common.libs.UrlManager import UrlManager
+from common.libs.user.UserService import UserService
 from common.models.User import User
+from application import db
 
 route_account = Blueprint("account_page",__name__)
 
@@ -88,5 +90,78 @@ def set():
         resp['code'] = -1
         resp['msg'] = "改登录名已经存在，请更换"
         return jsonify(resp)
+
+    
+    user_info = User.query.filter_by(uid=id).first()
+
+    if user_info:
+        model_user = user_info
+    else:
+        model_user = User()
+        # 插入格式化的时间
+        model_user.create_time = getCurrentDate()
+        # 生成十六位的加密字符串
+        model_user.login_salt = UserService.generateSalt()
+
+    model_user.nickname = nickname
+    model_user.mobile = mobile
+    model_user.email = email
+    model_user.login_name = login_name
+    
+    if user_info and user_info == 1:
+        resp['code'] = -1
+        resp['msg'] = "该用户为Mary"
+        return jsonify(resp)
+
+    model_user.login_pwd = UserService.generatePwd(login_pwd,model_user.login_salt)
+    # 插入格式化的时间
+    model_user.updated_time = getCurrentDate()
+
+    db.session.add(model_user)
+    db.session.commit()
+
+    return jsonify(resp)
+
+
+
+@route_account.route("/remove-or-recover",methods=['POST','GET'])
+def removeOrRecover():
+    resp = {
+        'code':200,
+        'msg':"操作成功",
+        "data":{}
+    }
+
+    req = request.values
+    id = req['id'] if 'id' in req else 0
+    acts = req['acts'] if 'acts' in req else ''
+    if not id:
+        resp['code'] = -1
+        resp['msg'] = "请选择要操作的账号"
+        return jsonify(resp)
+    if acts not in ['remove','recover']:
+        resp['code'] = -1
+        resp['msg'] = "操作有误"
+        return jsonify(resp)
+
+    user_info = User.query.filter_by(uid=id).first()
+    if not user_info:
+        resp['code'] = -1
+        resp['msg'] = "该账号不存在"
+        return jsonify(resp)
+
+    if user_info and user_info.uid == 1:
+        resp['code'] = -1
+        resp['msg'] = "该账号是Mary，不允许操作"
+        return jsonify(resp)
+
+    if acts == 'remove':
+        user_info.status = 0
+    elif acts == 'recover':
+        user_info.status = 1
+    
+    user_info.updated_time = getCurrentDate()
+    db.session.add(user_info)
+    db.session.commit()
 
     return jsonify(resp)

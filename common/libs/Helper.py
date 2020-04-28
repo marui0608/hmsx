@@ -1,7 +1,21 @@
 from flask import render_template,g
+import datetime
 
 # 自定义渲染方法
 def ops_render(template,context={}):
     if 'current_user' in g:
         context['current_user'] = g.current_user
     return render_template(template,**context)
+
+
+
+# 自定义时间格式化方法
+    # 获取的当前时间，并格式化
+
+def getCurrentDate():
+    return datetime.datetime.now()
+
+
+
+# def getCurrentDate(format = "%Y-%m-%d %H:%H:%S"):
+    # return datetime.datetime.now().strftime(format)

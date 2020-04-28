@@ -1,4 +1,4 @@
-import hashlib,base64
+import hashlib,base64,random,string
 
 class UserService():
     # 生成密码 (结合pwd和salt)
@@ -18,3 +18,15 @@ class UserService():
         m.update(str.encode('utf-8'))
 
         return m.hexdigest()
+
+    # 生成一个只包含大小写字母和数字的十六位随机加密字符串
+    # 随机 random   string.ascii_letters(大写小字母) string,digits(0-9数字)
+    @staticmethod
+    def generateSalt(length = 16):
+        # list = []
+        # for i in range(16):
+        #     item = random.choice((string.ascii_letters + string.digits))
+        #     list.append(item)
+        # 列表生成式
+        list = [random.choice((string.ascii_letters + string.digits)) for i in range(length)]
+        return ("".join(list))
