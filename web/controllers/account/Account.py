@@ -1,18 +1,27 @@
 from flask import Blueprint,request,redirect,jsonify
+from sqlalchemy import or_
 
 from common.libs.Helper import ops_render,getCurrentDate
 from common.libs.UrlManager import UrlManager
 from common.libs.user.UserService import UserService
 from common.models.User import User
-from application import db
+from application import db,app
 
 route_account = Blueprint("account_page",__name__)
 
 @route_account.route("/index")
 def index():
     resp_data = {}
-    list = User.query.all()
+    query = User.query
+    req = request.values
+    if 'status' in req and int(req['status']) > -1:
+        query = query.filter(User.status == int(req['status']))
+    if 'mix_kw' in req:
+        rule = or_(User.nickname.ilike("%{0}%".format(req['mix_kw'])),User.mobile.like("%{0}%".format(req['mix_kw'])))
+        query = query.filter(rule)
+    list = query.all()
     resp_data['list'] = list
+    resp_data['status'] = app.config['STATUS']
     return ops_render("/account/index.html",resp_data)
 
 @route_account.route("/info")
@@ -28,7 +37,6 @@ def info():
         return redirect(reback_url)
     resp_data['info'] = info
     return ops_render("/account/info.html",resp_data)
-
 
 '''
     路由带ID参数，就是修改：更新数据库
@@ -121,8 +129,6 @@ def set():
     db.session.commit()
 
     return jsonify(resp)
-
-
 
 @route_account.route("/remove-or-recover",methods=['POST','GET'])
 def removeOrRecover():
