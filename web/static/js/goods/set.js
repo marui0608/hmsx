@@ -3,9 +3,13 @@
 var goods_set_ops = {
     init:function(){
         this.eventBind()
+        this.initEditor()
     },
     eventBind:function(){
         var that = this
+        $(".upload_pic_wrap input[name=pic]").change(function(){
+            $(".upload_pic_wrap").submit()
+        })
         $(".wrap_goods_set .save").click(function(){
             var btn_target = $(this)
             if(btn_target.hasClass("disabled")){
@@ -77,7 +81,26 @@ var goods_set_ops = {
         })
     },
     initEditor:function(){
-
+        var that = this
+        that.ue = UE.getEditor('editor',{
+            toolbars:[
+                ['fullscreen', 'source', '|', 'undo', 'redo', '|',
+                'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                'directionalityltr', 'directionalityrtl', 'indent', '|',
+                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+                'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo', 'music', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
+                'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
+                'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+                'print', 'preview', 'searchreplace', 'drafts', 'help']
+            ],
+            autoHeightEnabled:true,
+            autoFloatEnabled:true,
+            enableAutoSave:true,   // 自动保存
+            serverUrl:common_ops.buildUrl('/upload/ueditor')
+        });
     },
     delete_img:function(){
 
