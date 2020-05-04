@@ -18,5 +18,5 @@ def uploadPic():
     save_dir = root_path + file_dir
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
-     
+        
     return 'pic'
