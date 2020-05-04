@@ -1,6 +1,7 @@
 海马生鲜电商项目实战
 
-零、后台管理模板编写和选择
+# 零、后台管理模板编写和选择
+
 从码云或者github去搜索想要的开源项目
 vue lay-ui
 Bootstrap 模板
@@ -10,7 +11,8 @@ Bootstrap 模板
 安装nginx yum install -y nginx
 打开nginx的配置 vim /ect/nginx/nginx.conf
 
-二、flask-script （python manager.py runserver）
+# 二、flask-script （python manager.py runserver）
+
 安装：flask-script
 
 初始化：
@@ -26,7 +28,8 @@ manager.add_command( "runserver",Server(host="localhost",port=5000,use_debugger=
 
 manager.run()
 
-三、Flask蓝图路由
+# 三、Flask蓝图路由
+
 蓝图的基本概念是：在蓝图被注册到应用之后，所要执行的操作的集合。当分配请求 时， Flask 会把蓝图和视图函数关联起来，并生成两个端点之前的 URL 。
 
 /user_page/edit /user_page/add /user_page/delete
@@ -75,7 +78,8 @@ def login():
     print(request.values)
     return jsonify(resp)
 
-四、url管理和面向对象复习
+# 四、url管理和面向对象复习
+
 类的方法分几种：
 普通方法：默认有self参数，只能够被对象调用
 静态方法：@staticmethod 装饰，不带self参数，也可以没有参数，可以直接被类名调用
@@ -112,7 +116,8 @@ app.add_template_global(UrlManager.buildUrl,'buildUrl')
 app.add_template_global(UrlManager.buildStaticUrl,'buildStaticUrl')
 app.add_template_global(UrlManager.buildImageUrl,'buildImageUrl')
 
-五、创建user数据库
+# 五、创建user数据库
+
 新建项目数据库：hmsc_db
 
 create database `hmsc_db` default character set =`utf8`;
@@ -157,7 +162,8 @@ flask-sqlacodegen 'mysql://root:123456@127.0.0.1/hmsc_db' --tables user --outfil
 
 flask-sqlacodegen 'mysql://root:@127.0.0.1/hmsc_db' --outfile "common/models/model.py" --flask
 
-六、配置文件统一管理
+# 六、配置文件统一管理
+
 从配置文件中加载配置
 
 Application类中
@@ -169,7 +175,8 @@ if 'ops_config' in os.environ:
             self.config.from_pyfile("config/%s_setting.py"%os.environ['ops_config'])
         db.init_app(self)
 
-七、结合MD5算法和密钥字符串生成密码
+# 七、结合MD5算法和密钥字符串生成密码
+
 common/libs/user/UserService.py
 
 import hashlib,base64
@@ -183,13 +190,15 @@ class UserService():
         m.update(str.encode("utf-8"))
         return m.hexdigest()
 
-八、登录登出逻辑
+# 八、登录登出逻辑
+
 登录之后，把登录的状态做保持，session（服务端）和Cookie（客户端也就是浏览器上的）
 我们使用客户端Cookie
 判断Cookie 中的数据和数据库中的数据是否一致，如果一致且Cookie时间不过期，则表示已经登录
 后台管理页面必须得有权限设置，必须得是登录之后才可以进入到其他页面
 
-九、状态管理，将登陆状态记录到客户端Cookie中
+# 九、状态管理，将登陆状态记录到客户端Cookie中
+
 (自行补充上session的状态管理)
 
 from flask import make_response
@@ -210,7 +219,8 @@ return response
         m.update(str.encode("utf-8"))
         return m.hexdigest()
 
-十、拦截器实现权限保护（类比watchlist中的@login_required）&&flask的g对象
+# 十、拦截器实现权限保护（类比watchlist中的@login_required）&&flask的g对象
+
 拦截器逻辑 ：登录后，在去渲染首页之前，需要判断当前是否是登录状态，也就是cookie中的存储的信息是否和数据库中的一致，如果一致，则可以渲染首页，如果不一致，那返回登录页面
 
 专门用来存储用户信息的g对象，全称叫做global，g对象在一次请求中的所有的代码的地方，都可以使用
@@ -230,7 +240,8 @@ ERR_TOO_MANY_REDIRECTS
 
 是因为g对象的上下文context没有被渲染到模板中
 
-十一、网站首页数据库设计
+# 十一、网站首页数据库设计
+
 全站日统计
 use hmsc_db;
 
@@ -253,7 +264,8 @@ create table `stat_daily_site` (
 
 flask-sqlacodegen 'mysql://root:123456@127.0.0.1/hmsc_db' --tables stat_daily_site --outfile "common/models/stat/StatDailySite.py" --flask
 
-十二、 account 模块
+# 十二、 account 模块
+
 路由 http://localhost:9000/account/info?id=1 中取出id
 
 request.args.get('id')
@@ -282,7 +294,8 @@ pages_total  总共有多少页  total/page_size
 当前页数据开始位置  offset = (page-1) * page_size
 当前页数据结束位置  limit = page * page_size
 
-十三、member 会员管理
+# 十三、member 会员管理
+
 一、会员账号 数据库
 会员账号 数据库
 use hmsc_db;
@@ -331,7 +344,8 @@ flask-sqlacodegen 'mysql://root:123456@127.0.0.1/hmsc_db' --tables member_commen
 
 insert into `member_comments` (`id`,`member_id`,`goods_id`,`pay_order_id`,`score`,`content`,`created_time`) values (1,1,'1',1,'10','好，good','2020-04-29 11:10:30');
 
-十四、商品管理 goods
+# 十四、商品管理 goods
+
 数据库
 
 use hmsc_db;
@@ -362,7 +376,8 @@ flask-sqlacodegen 'mysql://root:123456@127.0.0.1/hmsc_db' --tables goods --outfi
 
 insert into `member_comments` (`id`,`member_id`,`goods_id`,`pay_order_id`,`score`,`content`,`created_time`) values (1,1,'1',1,'10','好，good','2020-04-29 11:10:30');
 
-十五、集成UEditor和HighCharts
+# 十五、集成UEditor和HighCharts
+
 一、UEditor
 官网：http://ueditor.baidu.com/website/ 看文档
 
